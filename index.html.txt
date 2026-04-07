@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luckier Since 2008</title>
+    <style>
+        :root {
+            --pink: #ff2d55;
+            --glow: #ff4d6d;
+            --glass: rgba(255, 255, 255, 0.03);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: radial-gradient(circle at center, #1a0b1a 0%, #050508 100%);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+            overflow: hidden;
+        }
+
+        /* 1. Starry Space Background */
+        #star-field {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1;
+        }
+
+        /* 2. THE TEXT YOU REQUESTED (Styled for Elegance) */
+        .reveal-header {
+            opacity: 0;
+            font-size: 0.8rem;
+            letter-spacing: 10px;
+            color: var(--pink);
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            font-weight: 500;
+            text-shadow: 0 0 20px var(--glow);
+            animation: fadeInDown 2s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+            animation-delay: 0.5s;
+            z-index: 10;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 3. The High-End Timer Card */
+        .glass-card {
+            opacity: 0;
+            display: flex;
+            gap: 45px;
+            padding: 50px 70px;
+            background: var(--glass);
+            backdrop-filter: blur(30px);
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.7);
+            animation: fadeInUp 2s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+            animation-delay: 1s;
+            z-index: 10;
+            position: relative;
+        }
+
+        /* Neon edge pulse */
+        .glass-card::after {
+            content: '';
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            border-radius: 52px;
+            background: linear-gradient(45deg, transparent, var(--pink), transparent);
+            z-index: -1;
+            animation: borderRotate 4s linear infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes borderRotate {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .unit { text-align: center; }
+        .num { 
+            font-size: 5rem; font-weight: 900; line-height: 1; letter-spacing: -4px;
+            background: linear-gradient(to bottom, #fff 40%, #ffb3c1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+        }
+        .label { font-size: 0.65rem; opacity: 0.4; letter-spacing: 5px; margin-top: 15px; }
+
+        /* 4. The Heart Tree Canvas */
+        #tree-canvas {
+            position: absolute;
+            bottom: 0; left: 0; width: 100%; height: 100%;
+            z-index: 5;
+            filter: drop-shadow(0 0 25px var(--pink));
+        }
+
+        /* 5. Drifting Hearts */
+        .drifter {
+            position: absolute;
+            color: var(--pink);
+            font-size: 1.5rem;
+            pointer-events: none;
+            z-index: 2;
+            animation: driftUp 12s linear infinite;
+        }
+
+        @keyframes driftUp {
+            0% { transform: translateY(110vh) translateX(0) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.5; }
+            80% { opacity: 0.5; }
+            100% { transform: translateY(-20vh) translateX(50px) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="star-field"></canvas>
+    
+    <div class="reveal-header">The world just got luckier since</div>
+    
+    <div class="glass-card">
+        <div class="unit"><span class="num" id="d">0</span><span class="label">DAYS</span></div>
+        <div class="unit"><span class="num" id="h">0</span><span class="label">HOURS</span></div>
+        <div class="unit"><span class="num" id="m">0</span><span class="label">MINUTES</span></div>
+        <div class="unit"><span class="num" id="s">0</span><span class="label">SECONDS</span></div>
+    </div>
+
+    <canvas id="tree-canvas"></canvas>
+
+    <script>
+        // Start Date: April 19, 2008
+        const startDate = new Date(2008, 3, 19, 0, 0, 0);
+
+        function update() {
+            const now = new Date();
+            const diff = now - startDate;
+            document.getElementById('d').innerText = Math.floor(diff / 86400000).toLocaleString();
+            document.getElementById('h').innerText = Math.floor((diff / 3600000) % 24).toString().padStart(2, '0');
+            document.getElementById('m').innerText = Math.floor((diff / 60000) % 60).toString().padStart(2, '0');
+            document.getElementById('s').innerText = Math.floor((diff / 1000) % 60).toString().padStart(2, '0');
+        }
+        setInterval(update, 1000); update();
+
+        // Star Background
+        const sc = document.getElementById('star-field');
+        const sCtx = sc.getContext('2
